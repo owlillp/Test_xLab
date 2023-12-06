@@ -6,17 +6,19 @@ namespace Task_3_3
 {
     public class Task_3_3 : MonoBehaviour
     {
+        private IPoolService<IToolChangeable> _poolService;
+        
         private void Awake()
         {
             ServiceLocator.ServiceLocator.Container.Register<IStaticDataService>(new StaticDataService());
-            ServiceLocator.ServiceLocator.Container.Register<IPoolService<IToolChangeable>>(new PoolService<IToolChangeable>());
+            _poolService = ServiceLocator.ServiceLocator.Container.Register<IPoolService<IToolChangeable>>(new PoolService<IToolChangeable>());
         }
 
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                var toolChangeables = ServiceLocator.ServiceLocator.Container.Get<IPoolService<IToolChangeable>>().Pool;
+                var toolChangeables = _poolService.Pool;
                 
                 foreach (var toolChangeable in toolChangeables)
                 {
