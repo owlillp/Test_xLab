@@ -12,15 +12,16 @@ namespace Task_3_3.ServiceLocator
         
         private readonly Dictionary<Type, IService> _services = new Dictionary<Type, IService>();
 
-        public void Register<T>(T service) where T : IService
+        public T Register<T>(T service) where T : IService
         {
             if (_services.ContainsKey(typeof(T)))
             {
                 Debug.Log($"Attempted to register service {typeof(T)}, which already contains ");
-                return;
+                return (T)_services[typeof(T)];
             }
             
             _services.Add(typeof(T), service);
+            return service;
         }
 
         public void Unregister<T>() where T : IService
